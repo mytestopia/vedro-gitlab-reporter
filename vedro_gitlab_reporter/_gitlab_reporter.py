@@ -51,8 +51,7 @@ class GitlabReporterPlugin(Reporter):
                         .listen(ArgParsedEvent, self.on_arg_parsed) \
                         .listen(StartupEvent, self.on_startup) \
                         .listen(ScenarioRunEvent, self.on_scenario_run) \
-                        .listen(ScenarioPassedEvent, self.on_scenario_end) \
-                        .listen(ScenarioFailedEvent, self.on_scenario_end) \
+                        .listen(ScenarioFailedEvent, self.on_scenario_failed) \
                         .listen(StepPassedEvent, self.on_step_end) \
                         .listen(StepFailedEvent, self.on_step_end) \
                         .listen(ScenarioReportedEvent, self.on_scenario_reported) \
@@ -99,7 +98,7 @@ class GitlabReporterPlugin(Reporter):
         self._scenario_steps.append({})
         self._scenario_result = event.scenario_result
 
-    def on_scenario_end(self, event: Union[ScenarioPassedEvent, ScenarioFailedEvent]) -> None:
+    def on_scenario_failed(self, event: Union[ScenarioFailedEvent]) -> None:
         self._add_extra_details(event.scenario_result)
 
     def on_step_end(self, event: Union[StepPassedEvent, StepFailedEvent]) -> None:
@@ -276,5 +275,5 @@ class GitlabReporter(PluginConfig):
     # Max stack trace entries to show (min=4)
     tb_max_frames: int = 8
 
-    # Show the relative path of each passed scenario
+    # Show the relative path of each failed scenario
     show_paths: bool = False

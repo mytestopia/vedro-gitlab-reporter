@@ -164,8 +164,6 @@ async def test_scenario_passed_with_show_path(*, dispatcher: Dispatcher, printer
                                         ScenarioStatus.PASSED,
                                         elapsed=aggregated_result.elapsed,
                                         prefix=" "),
-            call.print_scenario_extra_details([f"{aggregated_result.scenario.path.name}"],
-                                              prefix=" " * 3)
         ]
 
 
